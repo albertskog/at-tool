@@ -1,0 +1,4 @@
+- command: "AT"
+- command: "AT+NRB"
+- command: "AT+CEREG?"
+- command: "AT+CEREG=1"

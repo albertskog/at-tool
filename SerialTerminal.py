@@ -34,7 +34,7 @@ class SerialTerminal(tk.LabelFrame):
         self.command_line.pack(side=tk.LEFT, fill=tk.X, expand=1)
 
     def add_line(self, text):
-        self.terminal.insert(tk.END, text)
+        self.terminal.insert(tk.END, " " + text)
         self.terminal.yview_moveto(1)
 
     def send_callback(self, event=None):

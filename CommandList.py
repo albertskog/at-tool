@@ -27,6 +27,7 @@ class CommandList(tk.LabelFrame):
         frame = tk.Frame(self, background=self.background_color)
         button = tk.Button(frame,
                            text="Send",
+                           command=lambda: self.master.serial.send_data(text),
                            background=self.background_color)
         button.pack(side=tk.LEFT)
         label = tk.Label(frame,

@@ -37,8 +37,9 @@ class SerialPort():
         if self.port.is_open:
             if self.port.in_waiting > 0:
                 try:
-                    data = self.port.readline().decode()
-                    self.master.serial_terminal.add_line(data)
+                    data = self.port.readline().decode().strip()
+                    if data != "":
+                        self.master.serial_terminal.add_line(" " + data)
                 except UnicodeDecodeError:
                     pass
                 

@@ -11,7 +11,7 @@ class CommandList(tk.LabelFrame):
                                parent,
                                text="Commands",
                                background=self.background_color)
-        self.pack(fill="both", expand=1)
+        self.pack()
         self.load_commands()
 
     def load_commands(self):
@@ -28,12 +28,12 @@ class CommandList(tk.LabelFrame):
         button = tk.Button(frame,
                            text="Send",
                            background=self.background_color)
-        button.pack(side="left")
+        button.pack(side=tk.LEFT)
         label = tk.Label(frame,
                          text=text,
                          font=("Consolas", 16),
                          foreground="black",
                          background=self.background_color)
-        label.pack(side="left", anchor="w")
-        frame.pack(anchor="w")
+        label.pack(side=tk.LEFT, anchor=tk.W)
+        frame.pack(anchor=tk.W)
         self.command_labels.append([button, label])

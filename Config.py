@@ -9,7 +9,7 @@ class Config(tk.LabelFrame):
                                parent,
                                text="Configuration",
                                background=self.background_color)
-        self.pack(fill=tk.BOTH, padx=4, pady=2)
+        self.pack(fill=tk.BOTH, padx=4, pady=2, ipadx=5, ipady=4)
         
         self.port_label = tk.Label(self,
                                    text="Port:")

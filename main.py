@@ -13,8 +13,8 @@ class AtTool(tk.Tk):
         self.config = Config(self)
         self.pane = tk.PanedWindow(orient=tk.HORIZONTAL, sashwidth=5)
         self.pane.pack(fill=tk.BOTH, expand=1, padx=3, pady=3)
-        self.serial_terminal = SerialTerminal(self)
-        self.command_list = CommandList(self)
+        self.serial_terminal = SerialTerminal(self.pane)
+        self.command_list = CommandList(self.pane)
         self.pane.add(self.serial_terminal)
         self.pane.add(self.command_list)
 

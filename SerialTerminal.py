@@ -2,27 +2,28 @@ import tkinter as tk
 
 class SerialTerminal(tk.LabelFrame):
 
-    background_color = "#fff"
-
     def __init__(self, parent):
         tk.LabelFrame.__init__(self,
                                parent,
-                               text="Serial port",
-                               background=self.background_color)
+                               text="Serial port")
         self.pack(fill=tk.BOTH, expand=1)
+        
+        self.frame = tk.Frame(self)
+        self.frame.pack(side=tk.BOTTOM, fill=tk.X)
 
         self.terminal = tk.Listbox(self,
                                    width=50,
                                    font=("Consolas", 16))
-        self.y_scroll = tk.Scrollbar(self.terminal,
+
+        self.y_scroll = tk.Scrollbar(self,
                                      orient=tk.VERTICAL,
                                      command=self.terminal.yview)
+        
         self.terminal.configure(yscrollcommand=self.y_scroll.set)
-        self.terminal.pack(fill=tk.BOTH, expand=1, padx=2, pady=1)
-        self.y_scroll.pack(side=tk.RIGHT, fill=tk.Y)
 
-        self.frame = tk.Frame(self, background=self.background_color)
-        self.frame.pack(fill=tk.X)
+        self.y_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+        self.terminal.pack(fill=tk.BOTH, expand=1, padx=2, pady=1)
+
 
         self.send_button = tk.Button(self.frame,
                                      text="Send",
@@ -38,8 +39,8 @@ class SerialTerminal(tk.LabelFrame):
         self.terminal.yview_moveto(1)
 
     def send_callback(self, event=None):
-        if self.master.serial.port.is_open:
-            self.master.serial.send_data(self.command_line.get())
+        if self.master.master.serial.port.is_open:
+            self.master.master.serial.send_data(self.command_line.get())
             self.command_line.delete(0, tk.END)
         else:
             self.add_line("Not connected")

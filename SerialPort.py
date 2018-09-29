@@ -24,9 +24,8 @@ class SerialPort():
             self.port.open()
             self.master.after(100, self.get_data)
             self.master.serial_terminal.add_line("Port connected")
-        except serial.SerialException as error:
-            print(error)
-            self.master.serial_terminal.add_line(error)
+        except serial.SerialException:
+            self.master.serial_terminal.add_line("Port disconnected")
     
     def disconnect_port(self):
         if self.port.is_open:
@@ -34,8 +33,15 @@ class SerialPort():
             self.master.serial_terminal.add_line("Port disconnected")
 
     def get_data(self):
-        if self.port.is_open:
-            if self.port.in_waiting > 0:
+        try:
+            port_is_open = self.port.is_open
+            num_bytes_in_waiting = self.port.in_waiting
+        except OSError:
+            self.master.serial_terminal.add_line("Port disconnected")
+            return
+
+        if port_is_open:
+            if num_bytes_in_waiting > 0:
                 try:
                     data = self.port.readline().decode().strip()
                     if data != "":
@@ -55,6 +61,6 @@ class SerialPort():
                 self.master.serial_terminal.add_line(data)
             except serial.SerialException as error:
                 print(error)
-                self.master.serial_terminal.add_line(error)
+                self.master.serial_terminal.add_line("Port disconnected")
         else:
             self.master.serial_terminal.add_line("Port is closed")

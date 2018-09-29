@@ -9,7 +9,8 @@ class SerialTerminal(tk.LabelFrame):
                                parent,
                                text="Serial port",
                                background=self.background_color)
-        self.grid(row=0, column=0, sticky='NSEW')
+        # self.grid(row=0, column=0, sticky='NSEW')
+        self.pack(fill="both", expand=1)
 
         self.terminal = tk.Listbox(self)
         self.terminal.insert(tk.END, "asd")

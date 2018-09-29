@@ -26,17 +26,18 @@ class SerialTerminal(tk.LabelFrame):
 
         self.send_button = tk.Button(self.frame,
                                      text="Send",
-                                     command=self.send_button_callback)
+                                     command=self.send_callback)
         self.send_button.pack(side=tk.RIGHT)
 
         self.command_line = tk.Entry(self.frame)
+        self.command_line.bind("<Return>", self.send_callback)
         self.command_line.pack(side=tk.LEFT, fill=tk.X, expand=1)
 
     def add_line(self, text):
         self.terminal.insert(tk.END, text)
         self.terminal.yview_moveto(1)
 
-    def send_button_callback(self):
+    def send_callback(self, event=None):
         if self.master.serial.port.is_open:
             self.master.serial.send_data(self.command_line.get())
             self.command_line.delete(0, tk.END)

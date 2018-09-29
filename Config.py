@@ -9,7 +9,7 @@ class Config(tk.LabelFrame):
                                parent,
                                text="Configuration",
                                background=self.background_color)
-        self.pack(fill="both")
+        self.pack(fill="both", padx=4, pady=2)
         
         self.port_label = tk.Label(self,
                                    text="Port:")
@@ -26,7 +26,7 @@ class Config(tk.LabelFrame):
                            text="Refresh",
                            background=self.background_color)
         button.pack(side="left")
-        
+
         self.baudrate_label = tk.Label(self,
                                        text="Baudrate:")
         self.baudrate_label.pack(side="left")

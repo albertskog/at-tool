@@ -11,7 +11,6 @@ class CommandList(tk.LabelFrame):
                                parent,
                                text="Commands",
                                background=self.background_color)
-        # self.grid(row=0, column=1, sticky='NSEW')
         self.pack(fill="both", expand=1)
         self.load_commands()
 

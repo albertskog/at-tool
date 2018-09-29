@@ -3,30 +3,37 @@ import tkinter as tk
 
 class CommandList(tk.LabelFrame):
     
+    background_color = "#fff"
     command_labels = []
 
     def __init__(self, parent):
-        tk.LabelFrame.__init__(self, parent, text="Commands")
+        tk.LabelFrame.__init__(self,
+                               parent,
+                               text="Commands",
+                               background=self.background_color)
+        self.grid(row=0, column=1, sticky='NSEW')
+        self.load_commands()
 
+    def load_commands(self):
         try:
             commands = yaml.load(open('commands.yaml', 'r'))
         except yaml.YAMLError:
             print("Error in command file")
 
         for command in commands:
-            print(command['command'])
             self.add_command(command['command'])
-        
-        self.pack()
-    
+
     def add_command(self, text):
-        frame = tk.Frame(self)
-        button = tk.Button(frame, text="Send")
+        frame = tk.Frame(self, background=self.background_color)
+        button = tk.Button(frame,
+                           text="Send",
+                           background=self.background_color)
         button.pack(side="left")
         label = tk.Label(frame,
                          text=text,
                          font=("Consolas", 16),
-                         foreground="black")
-        label.pack(side="left")
-        frame.grid(sticky="nsew")
+                         foreground="black",
+                         background=self.background_color)
+        label.pack(side="left", anchor="w")
+        frame.pack(anchor="w")
         self.command_labels.append([button, label])

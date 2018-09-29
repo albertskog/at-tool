@@ -1,4 +1,5 @@
-- command: "AT"
-- command: "AT+NRB"
-- command: "AT+CEREG?"
-- command: "AT+CEREG=1"
+- command: 'AT'
+- command: 'AT+NRB'
+- command: 'AT+CEREG?'
+- command: 'AT+CEREG=1'
+- command: 'AT+NSOST=0,"123.123.1.123",3,"414243"'

@@ -11,9 +11,10 @@ class SerialTerminal(tk.LabelFrame):
         self.frame = tk.Frame(self)
         self.frame.pack(side=tk.BOTTOM, fill=tk.X)
 
-        self.terminal = tk.Listbox(self,
+        self.terminal = tk.Text(self,
                                    width=50,
                                    font=("Consolas", 16))
+        self.setup_tags()
 
         self.y_scroll = tk.Scrollbar(self,
                                      orient=tk.VERTICAL,
@@ -34,8 +35,28 @@ class SerialTerminal(tk.LabelFrame):
         self.command_line.bind("<Return>", self.send_callback)
         self.command_line.pack(side=tk.LEFT, fill=tk.X, expand=1)
 
-    def add_line(self, text):
-        self.terminal.insert(tk.END, " " + text)
+    def setup_tags(self):
+        self.terminal.tag_config("error",
+                                 background="#faa",
+                                 lmargin1=3,
+                                 spacing1=3,
+                                 spacing3=3)
+        self.terminal.tag_config("info",
+                                 background="#eef",
+                                 lmargin1=3,
+                                 spacing1=3,
+                                 spacing3=3)
+        self.terminal.tag_config("command",
+                                 lmargin1=3,
+                                 spacing1=8,
+                                 spacing3=2)
+        self.terminal.tag_config("response",
+                                 lmargin1=8,
+                                 spacing1=1,
+                                 spacing3=1)
+
+    def add_line(self, text, tag="info"):
+        self.terminal.insert(tk.END, "{}\n".format(text), tag)
         self.terminal.yview_moveto(1)
 
     def send_callback(self, event=None):
@@ -43,4 +64,4 @@ class SerialTerminal(tk.LabelFrame):
             self.master.master.serial.send_data(self.command_line.get())
             self.command_line.delete(0, tk.END)
         else:
-            self.add_line("Not connected")
+            self.add_line("Not connected", "error")

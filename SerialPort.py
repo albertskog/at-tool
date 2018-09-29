@@ -23,21 +23,21 @@ class SerialPort():
         try:
             self.port.open()
             self.master.after(100, self.get_data)
-            self.master.serial_terminal.add_line("Port connected")
+            self.master.serial_terminal.add_line("Port connected", "info")
         except serial.SerialException:
-            self.master.serial_terminal.add_line("Port disconnected")
+            self.master.serial_terminal.add_line("Port disconnected", "error")
     
     def disconnect_port(self):
         if self.port.is_open:
             self.port.close()
-            self.master.serial_terminal.add_line("Port disconnected")
+            self.master.serial_terminal.add_line("Port disconnected", "info")
 
     def get_data(self):
         try:
             port_is_open = self.port.is_open
             num_bytes_in_waiting = self.port.in_waiting
         except OSError:
-            self.master.serial_terminal.add_line("Port disconnected")
+            self.master.serial_terminal.add_line("Port disconnected", "error")
             return
 
         if port_is_open:
@@ -45,22 +45,27 @@ class SerialPort():
                 try:
                     data = self.port.readline().decode().strip()
                     if data != "":
-                        self.master.serial_terminal.add_line(" " + data)
+                        self.master.serial_terminal.add_line(data, "response")
                 except UnicodeDecodeError:
                     pass
                 
             self.master.serial_terminal.after(10, self.get_data)
         else:
-            self.master.serial_terminal.add_line("Port is disconnected")
+            self.master.serial_terminal.add_line("Port is disconnected", "error")
 
     def send_data(self, data):
-        if self.port.is_open:
-            data += "\r\n"
+        try:
+            port_is_open = self.port.is_open
+        except OSError:
+            self.master.serial_terminal.add_line("Port disconnected", "error")
+            return
+        if port_is_open:
+            newline = "\r\n"
             try:
-                self.port.write(data.encode())
-                self.master.serial_terminal.add_line(data)
+                self.port.write((data+newline).encode())
+                self.master.serial_terminal.add_line(data, "command")
             except serial.SerialException as error:
                 print(error)
-                self.master.serial_terminal.add_line("Port disconnected")
+                self.master.serial_terminal.add_line("Port disconnected", "error")
         else:
-            self.master.serial_terminal.add_line("Port is closed")
+            self.master.serial_terminal.add_line("Port is not connected", "error")

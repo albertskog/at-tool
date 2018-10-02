@@ -10,6 +10,7 @@ class AtTool(tk.Tk):
         tk.Tk.__init__(self)
         self.serial = SerialPort(self)
         self.geometry('1000x1200+0+0')
+        self.title("AT-Tool")
         self.config = Config(self)
         self.pane = tk.PanedWindow(orient=tk.HORIZONTAL, sashwidth=5)
         self.pane.pack(fill=tk.BOTH, expand=1, padx=3, pady=3)

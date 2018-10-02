@@ -34,24 +34,21 @@ class SerialPort():
 
     def get_data(self):
         try:
-            port_is_open = self.port.is_open
-            num_bytes_in_waiting = self.port.in_waiting
+            if self.port.is_open:
+                if self.port.in_waiting > 0:
+                    try:
+                        data = self.port.readline().decode().strip()
+                        if data != "":
+                            self.master.serial_terminal.add_line(data, "response")
+                    except UnicodeDecodeError:
+                        pass
+                self.master.serial_terminal.after(10, self.get_data)
+            else:
+                self.master.serial_terminal.add_line("Port is disconnected", "error")
+
         except OSError:
             self.master.serial_terminal.add_line("Port disconnected", "error")
             return
-
-        if port_is_open:
-            if num_bytes_in_waiting > 0:
-                try:
-                    data = self.port.readline().decode().strip()
-                    if data != "":
-                        self.master.serial_terminal.add_line(data, "response")
-                except UnicodeDecodeError:
-                    pass
-                
-            self.master.serial_terminal.after(10, self.get_data)
-        else:
-            self.master.serial_terminal.add_line("Port is disconnected", "error")
 
     def send_data(self, data):
         try:
